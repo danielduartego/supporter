@@ -38,7 +38,7 @@ class SupportsController < ApplicationController
     @support = Support.find(params[:id])
     @supports = Support.all
     if @support.update(params.require(:support).permit([:name, :email, :department, :message ]))
-      flash[:notice] = "Request edited successfully"
+      flash[:notice] = "Request update successfully"
       redirect_to new_support_path
     else
       flash[:alert] = "Name and Email required"
