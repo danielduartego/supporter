@@ -1,0 +1,47 @@
+
+<div class="row">
+
+  <div class="col-md-4"></div>
+
+  <div class="col-md-4">
+
+        <%= form_for @support do |f| %>
+      <div class="form-group">
+        <%= f.label :name %>
+        <%= f.text_field :name, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :email %>
+        <%= f.text_field :email, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :department %>
+        <%= f.text_field :department, class: "form-control" %>
+
+      </div>
+      <div class="form-group">
+        <%= f.label :message  %>
+        <%= f.text_field :message, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.submit class: "btn btn-default" %>
+      </div>
+        <% end %>
+  </div>
+
+  <div class="col-md-4"></div>
+
+</div>
+
+
+<h2> Show</h2>
+
+<% @supports.each do |supp| %>
+
+      <td><%= supp.name %></td>
+      <td><%= supp.email %></td>
+      <td><%= supp.department %></td>
+      <td><%= supp.message %></td>
+      <br>
+
+  <% end %>

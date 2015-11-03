@@ -1,0 +1,38 @@
+
+<div class="row">
+
+  <div class="col-md-4"></div>
+
+  <div class="col-md-4">
+
+      <h2> Edit Support Request </h2>
+
+      <%= form_for @support do |f| %>
+    <div class="form-group">
+      <%= f.label :name %>
+      <%= f.text_field :name, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :email %>
+      <%= f.text_field :email, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.radio_button :department, "Marketing" %>
+      <%= f.label :Marketing %>
+      <%= f.radio_button :department, "Sales" %>
+      <%= f.label :Sales %>
+      <%= f.radio_button :department, "Technical" %>
+      <%= f.label :Technical %>
+    </div>
+    <div class="form-group">
+      <%= f.label :message  %>
+      <%= f.text_area :message, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.submit class: "btn btn-success" %>
+    </div>
+      <% end %>
+  </div>
+
+  <div class="col-md-4"></div>
+</div>
