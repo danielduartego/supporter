@@ -2,53 +2,47 @@ class SupportsController < ApplicationController
 
   def index
     @support = Support.new
-    @supports = Support.order("id DESC").all
   end
 
   def new
-    @support = Support.new
+    @supports = Support.order("id DESC").all
   end
 
   def create
+    @supports = Support.all
     @support = Support.new(params.require(:support).permit([:name, :email, :department, :message ]))
     if @support.save
       flash[:notice] = "Request created successfully"
-      redirect_to root_path
+      #render :new
+      redirect_to new_support_path
     else
-      render :index
       flash[:alert] = "Error"
+      render :index
     end
   end
 
-  def show
-    @support = Support.find params[:id]
-    @supports = Support.all
-  end
-
   def edit
-    @support = Support.find params[:id]
+    @support = Support.find(params[:id])
   end
 
   def update
     @support = Support.find(params[:id])
+    @supports = Support.all
     if @support.update(params.require(:support).permit([:name, :email, :department, :message ]))
       flash[:notice] = "Request edited successfully"
-      redirect_to root_path
+      redirect_to new_support_path
     else
+      flash[:alert] = "Name and Email required"
       render :edit
     end
   end
 
   def destroy
     @support = Support.find(params[:id])
+    @supports = Support.all
     @support.destroy
     flash[:notice] = "Request deleted successfully"
-    redirect_to root_path
-  end
-
-  def done
-    @support = Support.find(params[:id])
-
+    render :new
   end
 
 end

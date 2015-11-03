@@ -1,0 +1,32 @@
+
+    <h2> Support Requests</h2>
+    <table class="table table-striped table-bordered">
+
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Message</th>
+            <th>Actions</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+
+                  <% @supports.each do |supp| %>
+            <tr>
+              <td><%= supp.name %></td>
+              <td><%= mail_to supp.email %></td>
+              <td><%= supp.department %></td>
+              <td><%= supp.message %></td>
+              <td><%= link_to "Edit", edit_support_path(supp),
+                                      {class: "btn btn-info btn-sm"} %></td>
+              <td><%= link_to "Delete", support_path(supp), {method: :delete,
+                                                      class: "btn btn-danger btn-sm"} %></td>
+              <td><%= link_to "Done", support_path(supp), {method: :delete,
+                                                      class: "btn btn-success btn-sm"} %></td>
+
+            </td>
+          <% end %>
+      </table>
