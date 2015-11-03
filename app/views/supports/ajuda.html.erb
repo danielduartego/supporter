@@ -1,0 +1,131 @@
+def self.search(term)
+  if term == ""
+    "You must enter a search term"
+  else
+    where(["name ILIKE ? OR email ILIKE ? OR department ILIKE ? OR message ILIKE ?",
+            "%#{term}%", "%#{term}%", "%#{term}%", "%#{term}%"])
+  end
+end
+
+
+
+      <%= form_tag('/requests', method: 'get') do %>
+        <%= label_tag :search, "Search for:" %>
+        <%= text_field_tag(:search) %>
+        <%= submit_tag "Go!", class: "btn-xs btn-info"%>
+      <% end %>
+
+
+
+def index
+-    @posts = Post.all
++    # @posts = Post.all
++    @posts = Post.search(params[:search])
++
+   end
+
+
+   +  def search
+   +    @posts = Post.search(params[:search])
+   +    # render text: @posts.each {|post| puts post.title}
+   +  end
+
+
+   +  def self.search(term)
+   +    if term
+   +        # searches the body and title for search term regardless of case
+   +        where(["title ILIKE :search_term OR body ILIKE :search_term", {search_term: "%#{term}%"} ])
+   +    else
+   +      Post.all
+   +    end
+   +  end
+
+
+   +<h1>Search Results</h1>
+   +<ul class="list-group">
+   +  <%  @posts.each do |post| %>
+   +    <li class="list-group-item"><%= link_to post.title, post_path(post) %></li>
+   +    <% end  %>
+   +</ul>
+   +<%= "#{@posts.count} items found" %>
+
+   +  post 'posts/search' => 'posts#search'
+   # GET form to create post
+   get '/posts/new' => 'posts#new', as: :new_post
+   # POST a post
+
+def index
+  # @requests = Request.all
+  @requests = Request.search(params[:search])
+  if @requests.class == Array
+    @requests = Kaminari.paginate_array(@requests).page(params[:page]).per(10)
+  else
+    @requests = @requests.page(params[:page]).per(10) # if @posts is AR::Relation object
+end
+
+
++  def self.search(term)
++    if term
++        where(["name ILIKE :search_term OR email ILIKE :search_term OR message ILIKE :search_term", {search_term: "%#{term}%"} ])
++    else
++      Request.all.order("complete")
++    end
++  end
+
+
+
++<div class="col-md-8 col-lg-8">
++  <h1>Support Requests</h1>
++</div>
++
++<div class="col-md-4 col-lg-4">
++    <%= form_tag('/requests', method: 'get') do %>
++      <%= label_tag :search, "Search for:" %>
++      <%= text_field_tag(:search) %>
++      <%= submit_tag "Go!", class: "btn-xs btn-info"%>
++    <% end %>
++</div>
++
++
++<div class="col-md-12 col-lg-12">
++
++<table class="table">
++  <tr>
++  <th>Name</th><th>Email</th><th>Department</th><th>Message</th><th>Actions</th>
++  </tr>
++<% @requests.each do |request| %>
++
++  <tr> <td> <%= request.name %> </td> <td> <a href="mailto:<%=request.email%>"><%= request.email %></a></td>
++       <td> <%= request.department %> </td> <td> <%= request.message %> </td>
++       <td><%=link_to "Edit", edit_request_path(request), class: "btn-info btn-sm"%>
++           <%=link_to "Delete", request_path(request), method: "delete",
++                                        class: "btn-danger btn-sm",
++                                        data: {confirm: "Are you sure you want to delete?"} %>
++                                        <%#= "ID: #{request.id}" %>
++           <%=link_to request.complete ? "Done" : "Not Done", request_path(request),
++           method: "patch", class: "btn-info btn-sm"%>
++       </td>
++  </tr>
++
++  <% end  %>
++</table>
+
+
+
+
+
++<h1>Request summary</h1>
++
++
++  <table class="table" >
++      <tr class=""><td> <strong>Name:</strong></td> <td> <%= @request.name %> </td></tr>
++      <tr class=""><td> <strong>Email:</strong> </td> <td> <%= @request.email %> </td></tr>
++      <tr class=""><td> <strong>Department: </strong></td> <td> <%= @request.department %> </td></tr>
++      <tr class=""><td> <strong>Message: </strong></td> <td> <%= @request.message %> </td></tr>
++  </table>
++
++
++<%= link_to "Edit", edit_request_path(@request), class: "btn btn-primary btn-sm" %>
++<%= link_to "Delete", request_path(@request), method: "delete",
++                                        class: "btn btn-danger btn-sm",
++                                        data: {confirm: "Are you sure you want to delete?" }%>

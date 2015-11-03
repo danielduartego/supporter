@@ -5,7 +5,11 @@ class SupportsController < ApplicationController
   end
 
   def new
-    @supports = Support.order("id DESC").all
+    # if :search == nil
+       @supports = Support.order("id DESC").all
+    # else
+      @supports = Support.search(params[:search])
+    # end
   end
 
   def create
@@ -24,6 +28,11 @@ class SupportsController < ApplicationController
   def edit
     @support = Support.find(params[:id])
   end
+
+  # def show
+  #   #:search
+  #   redirect_to new_support_path
+  # end
 
   def update
     @support = Support.find(params[:id])
