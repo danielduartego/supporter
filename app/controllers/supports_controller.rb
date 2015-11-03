@@ -6,7 +6,7 @@ class SupportsController < ApplicationController
 
   def new
     # if :search == nil
-       @supports = Support.order("id DESC").all
+       #@supports = Support.order("id DESC").all
     # else
       @supports = Support.search(params[:search])
     # end
@@ -14,7 +14,7 @@ class SupportsController < ApplicationController
 
   def create
     @supports = Support.all
-    @support = Support.new(params.require(:support).permit([:name, :email, :department, :message ]))
+    @support = Support.new(params.require(:support).permit([:name, :email, :department, :message]))
     if @support.save
       flash[:notice] = "Request created successfully"
       #render :new
@@ -29,15 +29,14 @@ class SupportsController < ApplicationController
     @support = Support.find(params[:id])
   end
 
-  # def show
-  #   #:search
-  #   redirect_to new_support_path
-  # end
+  def show
+    @support = Support.find(params[:id])
+  end
 
   def update
     @support = Support.find(params[:id])
     @supports = Support.all
-    if @support.update(params.require(:support).permit([:name, :email, :department, :message ]))
+    if @support.update(params.require(:support).permit([:name, :email, :department, :message, :complete]))
       flash[:notice] = "Request update successfully"
       redirect_to new_support_path
     else

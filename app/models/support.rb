@@ -10,7 +10,8 @@ class Support < ActiveRecord::Base
       where(["name ILIKE ? OR email ILIKE ? OR department ILIKE ? OR message ILIKE ?",
               "%#{term}%", "%#{term}%", "%#{term}%", "%#{term}%"])
     else
-      Support.all
+      #Support.order("id ASC").all
+      Support.all.order("complete")
     end
   end
 
